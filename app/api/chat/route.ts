@@ -1,8 +1,24 @@
+import { NextRequest } from 'next/server';
+
+type Role = 'system' | 'user' | 'assistant';
+
+type ChatMessage = {
+  role: Role;
+  content: string;
+};
+
+type ChatRequestBody = {
+  messages: ChatMessage[];
+  model?: string;
+  temperature?: number;
+  maxTokens?: number;
+};
+
 const DEFAULT_MODEL = process.env.OPENAI_MODEL ?? 'gpt-4-1106-preview';
 const DEFAULT_TEMPERATURE = 0.9;
 const DEFAULT_MAX_TOKENS = 150;
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY;
   const endpoint = process.env.OPENAI_ENDPOINT ?? 'https://api.openai.com/v1';
 
@@ -13,10 +29,10 @@ export async function POST(request) {
     );
   }
 
-  let payload;
+  let payload: ChatRequestBody;
 
   try {
-    payload = await request.json();
+    payload = (await request.json()) as ChatRequestBody;
   } catch (error) {
     return Response.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }

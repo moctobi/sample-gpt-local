@@ -1,14 +1,29 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 
-const SYSTEM_MESSAGE = {
+type Role = 'system' | 'user' | 'assistant';
+
+interface Message {
+  role: Role;
+  content: string;
+}
+
+interface ChatCompletionResponse {
+  choices?: {
+    message?: {
+      content?: string;
+    };
+  }[];
+}
+
+const SYSTEM_MESSAGE: Message = {
   role: 'system',
   content: "You're a helpful chat bot. Answer short and concise in 150 tokens only.",
 };
 
 export default function Home() {
-  const [messages, setMessages] = useState([SYSTEM_MESSAGE]);
+  const [messages, setMessages] = useState<Message[]>([SYSTEM_MESSAGE]);
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -17,7 +32,7 @@ export default function Home() {
     [messages],
   );
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!userInput.trim()) {
@@ -25,7 +40,10 @@ export default function Home() {
     }
 
     const trimmedInput = userInput.trim();
-    const nextMessages = [...messages, { role: 'user', content: trimmedInput }];
+    const nextMessages: Message[] = [
+      ...messages,
+      { role: 'user', content: trimmedInput },
+    ];
 
     setMessages(nextMessages);
     setUserInput('');
@@ -44,7 +62,7 @@ export default function Home() {
         throw new Error('Request failed');
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as ChatCompletionResponse;
       const assistantMessage = data?.choices?.[0]?.message?.content;
 
       if (assistantMessage) {
@@ -61,7 +79,7 @@ export default function Home() {
           },
         ]);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('There was an error with the API request', error);
       setMessages((current) => [
         ...current,
@@ -75,10 +93,10 @@ export default function Home() {
     }
   };
 
-  const messageAlignment = (role) =>
+  const messageAlignment = (role: Role) =>
     role === 'user' ? 'justify-end text-right' : 'justify-start text-left';
 
-  const messageBubbleStyles = (role) =>
+  const messageBubbleStyles = (role: Role) =>
     role === 'user'
       ? 'bg-blue-500 text-white'
       : 'bg-white text-gray-800 border border-gray-200';
