@@ -87,9 +87,9 @@ export default function Home() {
     <main className="min-h-screen p-6">
       <div className="mx-auto max-w-2xl">
         <div className="mb-6 text-center">
-          <h1 className="text-4xl font-bold">ChatGPT Demo</h1>
+          <h1 className="text-4xl font-bold">Chat AI Demo</h1>
           <p className="mt-2 text-gray-600">
-            A minimal interface for experimenting with the OpenAI Chat Completions API.
+            A minimal interface for experimenting with the Openrouter Chat Completions API.
           </p>
         </div>
 

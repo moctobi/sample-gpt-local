@@ -80,8 +80,8 @@ npm start
 app/
   api/chat/route.js   # Next.js API route that forwards chat requests
   globals.css         # Tailwind styles and global CSS
-  layout.js           # Root layout definition
-  page.js             # Chat interface implemented with React hooks
+  layout.tsx           # Root layout definition
+  page.tsx             # Chat interface implemented with React hooks
 ```
 
 - The client keeps the system prompt (`"You're a helpful chat bot..."`) just like the original single-file implementation.
