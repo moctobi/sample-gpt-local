@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 
 const SYSTEM_MESSAGE = {
   role: 'system',
-  content: "You're a helpful chat bot. Answer short and concise in 150 tokens only.",
+  content: "You're a helpful chat bot. Answer short and concise in 150 tokens only. Hãy trả lời bằng tiếng việt.",
 };
 
 export default function Home() {
